@@ -1,13 +1,16 @@
 "use client";
-import { ThemeProvider } from "@mui/material";
-import { TopBar } from "@/features";
+import { Box, ThemeProvider, Typography } from "@mui/material";
 import theme from "./theme";
+import Link from "next/link";
 
 const Home = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <TopBar />
-    </ThemeProvider>
+   
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <Link href="/auth/signup">Sign Up</Link>
+        <Link href="/auth/signin">Sign In</Link>
+      </Box>
+
   );
 }
 

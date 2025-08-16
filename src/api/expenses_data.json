@@ -1,0 +1,62 @@
+[
+    {
+        "username": "alice",
+        "description": "Office coffee purchase",
+        "amount": 25.50,
+        "date": "2024-06-01"
+    },
+    {
+        "username": "bob",
+        "description": "Office supplies",
+        "amount": 40.00,
+        "date": "2024-06-02"
+    },
+    {
+        "username": "charlie",
+        "description": "Client lunch",
+        "amount": 78.90,
+        "date": "2024-06-03"
+    },
+    {
+        "username": "diana",
+        "description": "Travel expenses",
+        "amount": 120.00,
+        "date": "2024-06-04"
+    },
+    {
+        "username": "edward",
+        "description": "Conference ticket",
+        "amount": 300.00,
+        "date": "2024-06-05"
+    },
+    {
+        "username": "fiona",
+        "description": "Team building activity",
+        "amount": 150.00,
+        "date": "2024-06-06"
+    },
+    {
+        "username": "george",
+        "description": "Software subscription",
+        "amount": 50.00,
+        "date": "2024-06-07"
+    },
+    {
+        "username": "hannah",
+        "description": "Internet bill",
+        "amount": 60.00,
+        "date": "2024-06-08"
+    },
+    {
+        "username": "ian",
+        "description": "Office snacks",
+        "amount": 35.00,
+        "date": "2024-06-09"
+    },
+    {
+        "username": "julia",
+        "description": "Printer ink",
+        "amount": 45.00,
+        "date": "2024-06-10"
+    }
+]
