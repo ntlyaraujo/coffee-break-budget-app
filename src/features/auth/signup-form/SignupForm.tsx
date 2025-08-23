@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   Paper,
   Typography,
@@ -16,61 +17,45 @@ import {
   Link,
   LockIcon,
 } from "lucide-react";
-import type { FormData } from "../types";
-import useValidationForm from "../hooks/useValidationForm";
 import { TextInput } from "@/components";
 import { useTheme } from "@mui/material/styles";
+import { FormDataSignup } from "../types";
 
-const SignupForm = () => {
+type SignupFormProps = {
+  onSubmit: (formData: FormData) => Promise<void>;
+};
+
+const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
   const theme = useTheme();
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { errors, setErrors, validateForm } = useValidationForm({
-    formData,
-    setFormData,
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<FormDataSignup>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    mode: "onBlur",
   });
 
-  const handleInputChange =
-    (field: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: event.target.value,
-      }));
+  const password = watch("password");
 
-      // Clear error for this field when user starts typing
-      if (errors[field]) {
-        setErrors((prev) => ({
-          ...prev,
-          [field]: undefined,
-        }));
-      }
-    };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const onSubmitForm = async (data: FormDataSignup) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
     try {
-      // TODO: Implement actual signup logic here
-      console.log("Form submitted:", formData);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Handle successful signup (redirect, show success message, etc.)
-      alert("Account created successfully!");
+      await onSubmit(formData);
     } catch (error) {
       console.error("Signup error:", error);
-      // Handle error (show error message, etc.)
     }
   };
 
@@ -117,7 +102,7 @@ const SignupForm = () => {
         {/* Form */}
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmitForm)}
           sx={{
             width: "100%",
             display: "flex",
@@ -125,115 +110,171 @@ const SignupForm = () => {
             gap: 2,
           }}
         >
-          {/* Name Fields Row */}
-          <TextInput
-            required
-            id="fullName"
-            label="Full Name"
-            name="fullName"
-            autoComplete="given-name"
-            value={formData.fullName}
-            onChange={handleInputChange("fullName")}
-            error={!!errors.fullName}
-            helperText={errors.fullName}
-            startAdornment={
-              <InputAdornment position="start">
-                <User size={20} color={theme.palette.text.primary} />
-              </InputAdornment>
-            }
-            placeholder="Enter your full name"
+          {/* Name Field */}
+          <Controller
+            name="name"
+            control={control}
+            rules={{
+              required: "Full name is required",
+              minLength: {
+                value: 2,
+                message: "Name must be at least 2 characters",
+              },
+            }}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                required
+                id="name"
+                label="Full Name"
+                name="name"
+                autoComplete="given-name"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <User size={20} color={theme.palette.text.primary} />
+                  </InputAdornment>
+                }
+                placeholder="Enter your full name"
+              />
+            )}
           />
 
           {/* Email Field */}
-          <TextInput
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
+          <Controller
             name="email"
-            autoComplete="email"
-            value={formData.email}
-            onChange={handleInputChange("email")}
-            error={!!errors.email}
-            helperText={errors.email}
-            startAdornment={
-              <InputAdornment position="start">
-                <Mail size={20} color={theme.palette.text.primary} />
-              </InputAdornment>
-            }
-            placeholder="Enter your email address"
+            control={control}
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Please enter a valid email address",
+              },
+            }}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Mail size={20} color={theme.palette.text.primary} />
+                  </InputAdornment>
+                }
+                placeholder="Enter your email address"
+              />
+            )}
           />
 
           {/* Password Field */}
-          <TextInput
-            required
-            fullWidth
+          <Controller
             name="password"
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            autoComplete="new-password"
-            value={formData.password}
-            onChange={handleInputChange("password")}
-            error={!!errors.password}
-            helperText={errors.password}
-            startAdornment={
-              <InputAdornment position="start">
-                <LockIcon size={20} color={theme.palette.text.primary} />
-              </InputAdornment>
-            }
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  {showPassword ? (
-                    <EyeOff size={20} color={theme.palette.text.secondary} />
-                  ) : (
-                    <Eye size={20} color={theme.palette.text.secondary} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            }
-            placeholder="Enter your password"
+            control={control}
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                message:
+                  "Password must contain uppercase, lowercase, and number",
+              },
+            }}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                autoComplete="new-password"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LockIcon size={20} color={theme.palette.text.primary} />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <EyeOff
+                          size={20}
+                          color={theme.palette.text.secondary}
+                        />
+                      ) : (
+                        <Eye size={20} color={theme.palette.text.secondary} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Enter your password"
+              />
+            )}
           />
 
           {/* Confirm Password Field */}
-          <TextInput
-            required
-            fullWidth
+          <Controller
             name="confirmPassword"
-            label="Confirm Password"
-            type={showConfirmPassword ? "text" : "password"}
-            id="confirmPassword"
-            autoComplete="new-password"
-            value={formData.confirmPassword}
-            onChange={handleInputChange("confirmPassword")}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword}
-            startAdornment={
-              <InputAdornment position="start">
-                <LockIcon size={20} color={theme.palette.text.primary} />
-              </InputAdornment>
-            }
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle confirm password visibility"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  edge="end"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} color={theme.palette.text.primary} />
-                  ) : (
-                    <Eye size={20} color={theme.palette.text.primary} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            }
-            placeholder="Confirm your password"
+            control={control}
+            rules={{
+              required: "Please confirm your password",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            }}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                autoComplete="new-password"
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword?.message}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LockIcon size={20} color={theme.palette.text.primary} />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle confirm password visibility"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      edge="end"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} color={theme.palette.text.primary} />
+                      ) : (
+                        <Eye size={20} color={theme.palette.text.primary} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Confirm your password"
+              />
+            )}
           />
 
           {/* Submit Button */}
@@ -241,6 +282,7 @@ const SignupForm = () => {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={isSubmitting}
             sx={{
               mt: 3,
               mb: 2,
@@ -249,7 +291,7 @@ const SignupForm = () => {
               fontWeight: "bold",
             }}
           >
-            Create Account
+            {isSubmitting ? "Creating Account..." : "Create Account"}
           </Button>
 
           {/* Sign In Link */}

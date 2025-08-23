@@ -1,2 +1,1 @@
-export * from "./forms/FormData";
-export * from "./forms/FormErrors";
+export * from "./forms/FormDataSignup";

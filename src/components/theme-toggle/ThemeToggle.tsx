@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext";
 import {
