@@ -76,6 +76,7 @@ export const StyledHelperText = styled(FormHelperText, {
 
   return {
     fontSize: tokens.typography.fontSize.xs,
+    margin: 0,
     marginTop: tokens.spacing.xs / 8,
     color: error ? tokens.colors.semantic.error : tokens.colors.text.secondary,
   };

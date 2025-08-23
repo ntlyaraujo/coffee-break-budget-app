@@ -36,13 +36,13 @@ const Home = () => {
           >
             <StyledGradientLinkButton
               text="Get Started Free"
-              href="/auth/signup"
+              href="/signup"
               variant="contained"
               size="large"
             />
             <LinkButton
               text="Sign In"
-              href="/auth/signin"
+              href="/signin"
               variant="outlined"
               size="large"
               sx={{ minWidth: 160, py: 1.5, fontSize: "1rem" }}

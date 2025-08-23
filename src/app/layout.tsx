@@ -15,10 +15,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <MainContainer>
-            {/* Fixed Theme Toggle */}
-            
-              <ThemeToggle size="medium" showTooltip={true} />
-          
             {children}
           </MainContainer>
         </ThemeProvider>

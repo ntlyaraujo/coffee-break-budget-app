@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -9,8 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import {
-  UserPlus,
-  User,
+  LogIn,
   Mail,
   EyeOff,
   Eye,
@@ -19,44 +19,37 @@ import {
 } from "lucide-react";
 import { TextInput } from "@/components";
 import { useTheme } from "@mui/material/styles";
-import { FormDataSignup } from "../types";
+import { FormDataSignin } from "../types";
 import { StyledFormContainer, StyledFormPaper } from "../styles";
 
-type SignupFormProps = {
+type SigninFormProps = {
   onSubmit: (formData: FormData) => Promise<void>;
 };
 
-const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
+const SigninForm: React.FC<SigninFormProps> = ({ onSubmit }) => {
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormDataSignup>({
+  } = useForm<FormDataSignin>({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
     mode: "onBlur",
   });
 
-  const password = watch("password");
-
-  const onSubmitForm = async (data: FormDataSignup) => {
+  const onSubmitForm = async (data: FormDataSignin) => {
     const formData = new FormData();
-    formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("password", data.password);
     try {
       await onSubmit(formData);
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Signin error:", error);
     }
   };
 
@@ -65,12 +58,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
       <StyledFormPaper elevation={3}>
         {/* Header */}
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <UserPlus
+          <LogIn
             size={32}
             style={{ marginRight: 8, color: theme.palette.primary.main }}
           />
           <Typography component="h1" variant="h4" fontWeight="bold">
-            Create Account
+            Welcome Back
           </Typography>
         </Box>
 
@@ -79,7 +72,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
           color="text.secondary"
           sx={{ mb: 3, textAlign: "center" }}
         >
-          Join us to start managing your coffee break budget
+          Sign in to continue managing your coffee break budget
         </Typography>
 
         {/* Form */}
@@ -93,37 +86,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
             gap: 2,
           }}
         >
-          {/* Name Field */}
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: "Full name is required",
-              minLength: {
-                value: 2,
-                message: "Name must be at least 2 characters",
-              },
-            }}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                required
-                id="name"
-                label="Full Name"
-                name="name"
-                autoComplete="given-name"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <User size={20} color={theme.palette.text.primary} />
-                  </InputAdornment>
-                }
-                placeholder="Enter your full name"
-              />
-            )}
-          />
-
           {/* Email Field */}
           <Controller
             name="email"
@@ -166,11 +128,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
                 value: 8,
                 message: "Password must be at least 8 characters",
               },
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                message:
-                  "Password must contain uppercase, lowercase, and number",
-              },
             }}
             render={({ field }) => (
               <TextInput
@@ -181,7 +138,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
                 label="Password"
                 type={showPassword ? "text" : "password"}
                 id="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 startAdornment={
@@ -212,54 +169,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
             )}
           />
 
-          {/* Confirm Password Field */}
-          <Controller
-            name="confirmPassword"
-            control={control}
-            rules={{
-              required: "Please confirm your password",
-              validate: (value) =>
-                value === password || "Passwords do not match",
-            }}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                autoComplete="new-password"
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <LockIcon size={20} color={theme.palette.text.primary} />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle confirm password visibility"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      edge="end"
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff size={20} color={theme.palette.text.primary} />
-                      ) : (
-                        <Eye size={20} color={theme.palette.text.primary} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="Confirm your password"
-              />
-            )}
-          />
-
           {/* Submit Button */}
           <Button
             type="submit"
@@ -274,14 +183,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
               fontWeight: "bold",
             }}
           >
-            {isSubmitting ? "Creating Account..." : "Create Account"}
+            {isSubmitting ? "Signing In..." : "Sign In"}
           </Button>
 
-          {/* Sign In Link */}
+          {/* Sign Up Link */}
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="body2">
-              Already have an account?{" "}
-              <Link href="/auth/signin">Sign in here</Link>
+              Don't have an account?{" "}
+              <Link href="/auth/signup">Create one here</Link>
             </Typography>
           </Box>
         </Box>
@@ -290,4 +199,4 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
   );
 };
 
-export default SignupForm;
+export default SigninForm;
