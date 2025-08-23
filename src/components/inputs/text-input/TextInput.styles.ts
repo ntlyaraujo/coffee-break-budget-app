@@ -1,6 +1,20 @@
-import { InputBase, InputLabel } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  InputBase,
+  InputLabel,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { getTokens } from "@/app/tokens";
+
+export const StyledFormControl = styled(FormControl)(({ theme }) => {
+  return {
+    display: "flex",
+    flexDirection: "column",
+
+    padding: theme.spacing(2),
+  };
+});
 
 export const StyledInput = styled(InputBase)(({ theme }) => {
   const tokens = getTokens(theme.palette.mode);
@@ -10,7 +24,7 @@ export const StyledInput = styled(InputBase)(({ theme }) => {
     width: "100%",
     border: "1px solid",
     borderColor: tokens.colors.border.default,
-    fontSize: tokens.typography.fontSize.sm,
+    fontSize: tokens.typography.fontSize.md,
     fontWeight: tokens.typography.fontWeight.regular,
     padding: `${tokens.spacing.sm}px ${tokens.spacing.md}px`,
     backgroundColor: tokens.colors.surface.paper,
@@ -23,6 +37,7 @@ export const StyledInput = styled(InputBase)(({ theme }) => {
     "&:hover": {
       borderColor: tokens.colors.border.hover,
     },
+
     "&.Mui-focused": {
       borderColor: tokens.colors.border.focus,
       backgroundColor: tokens.colors.surface.paper,
@@ -48,8 +63,20 @@ export const StyledInputLabel = styled(InputLabel)(({ theme }) => {
   const tokens = getTokens(theme.palette.mode);
 
   return {
-    fontSize: tokens.typography.fontSize.sm,
+    fontSize: tokens.typography.fontSize.lg,
     fontWeight: tokens.typography.fontWeight.medium,
     color: tokens.colors.text.primary,
+  };
+});
+
+export const StyledHelperText = styled(FormHelperText, {
+  shouldForwardProp: (prop: string) => prop !== "error",
+})<{ error?: boolean }>(({ theme, error }) => {
+  const tokens = getTokens(theme.palette.mode);
+
+  return {
+    fontSize: tokens.typography.fontSize.xs,
+    marginTop: tokens.spacing.xs / 8,
+    color: error ? tokens.colors.semantic.error : tokens.colors.text.secondary,
   };
 });

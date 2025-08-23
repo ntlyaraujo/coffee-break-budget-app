@@ -1,47 +1,41 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
-import { Sun, Moon } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import React from "react";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "../../contexts/ThemeContext";
+import {
+  StyledThemeToggleButton,
+  StyledThemeToggleContainer,
+} from "./ThemeToggle.styles";
 
 interface ThemeToggleProps {
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
   showTooltip?: boolean;
 }
 
-export const ThemeToggle: React.FC<ThemeToggleProps> = ({ 
-  size = 'medium', 
-  showTooltip = true 
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({
+  size = "medium",
+  showTooltip = true,
 }) => {
   const { mode, toggleTheme } = useTheme();
 
   let iconSize = 22;
-  if (size === 'small') {
+  if (size === "small") {
     iconSize = 18;
-  } else if (size === 'large') {
+  } else if (size === "large") {
     iconSize = 28;
   }
 
   const button = (
-    <IconButton
+    <StyledThemeToggleButton
       onClick={toggleTheme}
       color="inherit"
       size={size}
-      sx={{
-        transition: 'transform 0.2s ease-in-out',
-        '&:hover': {
-          transform: 'scale(1.1)',
-        },
-      }}
-      aria-label={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}
+      aria-label={`Switch to ${mode === "light" ? "dark" : "light"} mode`}
     >
-      {mode === 'light' ? (
-        <Moon size={iconSize} />
-      ) : (
-        <Sun size={iconSize} />
-      )}
-    </IconButton>
+      {mode === "light" ? <Moon size={iconSize} /> : <Sun size={iconSize} />}
+    </StyledThemeToggleButton>
   );
 
   if (!showTooltip) {
@@ -49,12 +43,14 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   }
 
   return (
-    <Tooltip 
-      title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}
-      placement="bottom"
-    >
-      {button}
-    </Tooltip>
+    <StyledThemeToggleContainer>
+      <Tooltip
+        title={`Switch to ${mode === "light" ? "dark" : "light"} mode`}
+        placement="bottom"
+      >
+        {button}
+      </Tooltip>
+    </StyledThemeToggleContainer>
   );
 };
 

@@ -1,7 +1,6 @@
-import { FormControl, FormHelperText, InputBaseProps } from "@mui/material";
+import { InputBaseProps } from "@mui/material";
 
-import { getTokens } from "@/app/tokens";
-import { StyledInput, StyledInputLabel } from "./TextInput.styles";
+import { StyledFormControl, StyledHelperText, StyledInput, StyledInputLabel } from "./TextInput.styles";
 
 type Props = InputBaseProps & {
   label?: string;
@@ -12,7 +11,7 @@ type Props = InputBaseProps & {
 
 const TextInput = ({ label, required, helperText, error, ...props }: Props) => {
   return (
-    <FormControl fullWidth required={required} error={error}>
+    <StyledFormControl fullWidth required={required} error={error} >
       {label && (
         <StyledInputLabel shrink htmlFor={props.id}>
           {label}
@@ -20,23 +19,9 @@ const TextInput = ({ label, required, helperText, error, ...props }: Props) => {
       )}
       <StyledInput {...props} />
       {helperText && (
-        <FormHelperText
-          error={error}
-          sx={(theme) => {
-            const tokens = getTokens(theme.palette.mode);
-            return {
-              fontSize: tokens.typography.fontSize.xs,
-              marginTop: tokens.spacing.xs / 8,
-              color: error
-                ? tokens.colors.semantic.error
-                : tokens.colors.text.secondary,
-            };
-          }}
-        >
-          {helperText}
-        </FormHelperText>
+        <StyledHelperText error={error}>{helperText}</StyledHelperText>
       )}
-    </FormControl>
+    </StyledFormControl>
   );
 };
 
