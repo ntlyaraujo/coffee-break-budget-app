@@ -1,0 +1,29 @@
+{
+  "expenses": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "username": "john.doe",
+      "description": "Office coffee supplies - 2kg premium beans",
+      "amount": 45.99,
+      "date": "2025-12-27",
+      "state": "InProgress"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "username": "jane.smith",
+      "description": "Team lunch meeting",
+      "amount": 125.50,
+      "date": "2025-12-26",
+      "state": "ReadyForApproval"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "username": "john.doe",
+      "description": "Printer paper and ink cartridges",
+      "amount": 89.00,
+      "date": "2025-12-25",
+      "state": "Approved"
+    }
+  ]
+}
+
