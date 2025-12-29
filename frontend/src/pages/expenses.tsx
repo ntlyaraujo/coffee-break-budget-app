@@ -3,17 +3,16 @@ import { Route as rootRoute } from "../app/App";
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/about",
-  component: AboutComponent,
+  path: "/expenses",
+  component: ExpensesComponent,
 });
 
-function AboutComponent() {
+function ExpensesComponent() {
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">About</h1>
+      <h1 className="text-3xl font-bold mb-4">Expenses</h1>
       <p className="text-gray-600">
-        Coffee Break Budget helps you track daily expenses and stay on top of
-        your finances.
+        Track your expenses and manage your budget effectively.
       </p>
     </div>
   );

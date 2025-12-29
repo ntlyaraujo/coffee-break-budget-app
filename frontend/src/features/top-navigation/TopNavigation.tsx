@@ -1,58 +1,33 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
+import { Navbar, NavbarBrand, NavbarContent } from "@heroui/navbar";
 import { Link } from "@tanstack/react-router";
+import { SquarePlus, TrendingUp, Coffee } from "lucide-react";
+import TopNavigationItem from "./components/TopNavigationItem";
+import ThemeSwitch from "./components/ThemeSwitch";
 
-/**
- * TopNavigation with TanStack Router Links
- *
- * Key concepts:
- * - Import Link from @tanstack/react-router
- * - Use `to` prop instead of `href` for type-safe routing
- * - The Link component automatically handles active states
- * - activeProps applies styles when the route is active
- */
 const TopNavigation = () => {
   return (
-    <Navbar>
+    <Navbar isBordered>
       <NavbarBrand>
-        <Link
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore - Route types are registered in router.tsx
-          to="/"
-          className="font-bold text-inherit"
-        >
+        <Link to="/" className="font-bold flex items-end gap-2">
+          <Coffee className="w-8 h-8" />
           Coffee Break Budget
         </Link>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore - Route types are registered in router.tsx
-            to="/"
-            className="text-foreground hover:text-primary transition-colors"
-            activeProps={{ className: "text-primary font-semibold" }}
-          >
-            Home
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore - Route types are registered in router.tsx
-            to="/about"
-            className="text-foreground hover:text-primary transition-colors"
-            activeProps={{ className: "text-primary font-semibold" }}
-          >
-            About
-          </Link>
-        </NavbarItem>
+        <TopNavigationItem
+          to="/"
+          icon={<TrendingUp className="w-4 h-4" />}
+          title="Dashboard"
+        />
+        <TopNavigationItem
+          to="/expenses"
+          icon={<SquarePlus className="w-4 h-4" />}
+          title="Expenses"
+        />
       </NavbarContent>
-
       <NavbarContent justify="end">
-        <NavbarItem>
-          <span className="text-sm text-gray-500">Code-Based Routing Demo</span>
-        </NavbarItem>
+        <ThemeSwitch />
       </NavbarContent>
     </Navbar>
   );
