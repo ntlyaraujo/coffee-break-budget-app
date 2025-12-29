@@ -1,14 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as rootRoute } from "../app/App";
 
-/**
- * About Route - Example of another top-level route (/about)
- *
- * Key concepts:
- * - Same pattern as index route
- * - getParentRoute defines which route this is a child of
- * - path: "/about" makes this accessible at /about
- */
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/about",

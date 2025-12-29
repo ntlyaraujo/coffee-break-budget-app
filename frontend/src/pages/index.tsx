@@ -1,15 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "../app/__root";
+import { Route as rootRoute } from "../app/App";
 
-/**
- * Index Route - The home page (/)
- *
- * Key concepts for CODE-BASED routing:
- * - Use createRoute() (not createFileRoute - that's for file-based routing)
- * - getParentRoute: () => rootRoute - defines the parent relationship
- * - path: "/" - this is the URL path for this route
- * - This component renders inside the <Outlet /> of __root.tsx
- */
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
