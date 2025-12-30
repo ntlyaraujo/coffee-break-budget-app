@@ -1,7 +1,7 @@
 import { HeroUIProvider } from "@heroui/react";
 import ThemeProvider from "../context/theme/ThemeProvider";
 
-const Providers = ({ children }: { children: React.ReactNode }) => {
+const AppProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <HeroUIProvider>
       <ThemeProvider>{children}</ThemeProvider>
@@ -9,4 +9,4 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Providers;
+export default AppProviders;

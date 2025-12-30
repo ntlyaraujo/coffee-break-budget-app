@@ -1,8 +1,8 @@
-import { useSwitch, VisuallyHidden } from "@heroui/react";
+import { useSwitch, VisuallyHidden, type SwitchProps } from "@heroui/react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useContext } from "react";
 import { ThemeContext } from "../../../context";
-const ThemeSwitch = (props: any) => {
+const ThemeSwitch = (props: SwitchProps) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { Component, slots, getBaseProps, getInputProps, getWrapperProps } =
     useSwitch(props);

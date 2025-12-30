@@ -3,14 +3,10 @@ import { ThemeContext } from "./ThemeContext";
 import type { Theme } from "./Theme";
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>("light");
-  useEffect(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme as Theme);
-      document.documentElement.classList.add(savedTheme as Theme);
-    }
-  }, []);
+    return (savedTheme as Theme) || "light";
+  });
 
   const toggleTheme = useCallback(() => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -20,6 +16,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [theme]);
 
   useEffect(() => {
+    document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
   }, [theme]);
 
